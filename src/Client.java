@@ -32,54 +32,32 @@ public class Client {
         writer.println(message);
     }
 
-    public void checkForMessage() {
-        while (reader.nextLine() != null) {
-            String message = getMessage();
-            System.out.println(message);
-        }
+
+    private void startResponseReaderThread() {
+        Thread responseThread = new Thread(() -> {
+                while (reader.hasNextLine()) {
+                    String response = reader.nextLine();
+                    System.out.println(response);
+                }
+        });
+        responseThread.start();
     }
 
+
     public void runLogic() {
-        String message;
-//        while (true) {
-//            message = getMessage();
-//            System.out.println(message);
-//            System.out.println("before if");
-//
-//            if(message.trim().isEmpty() || message == null || message.isBlank() || message.equals("\n")) {
-//                System.out.println("if entered");
-//                //sendMessage(scanner.nextLine());
-//                System.out.println("passed");
-//                continue;
-//            }
-//        }
+        startResponseReaderThread();
+        while (true) {
+            String message = scanner.nextLine();
+            if (message.equals("exit")) {
+                break;
+            }
 
-//        while (true) {
-//            message = getMessage();
-//            System.out.println(message);
-//            sendMessage(scanner.nextLine());
-//        }
-
-        getAndPrintMessage();
-        getAndPrintMessage();
-        sendMessage(scanner.nextLine());
-        getAndPrintMessage();
-        sendMessage(scanner.nextLine());
-        getAndPrintMessage();
-        getAndPrintMessage();
-        getAndPrintMessage();
-        getAndPrintMessage();
-        sendMessage(scanner.nextLine());
-        getAndPrintMessage();
-        sendMessage(scanner.nextLine());
-        getAndPrintMessage();
-        sendMessage(scanner.nextLine());
-        getAndPrintMessage();
+            sendMessage(message);
+        }
     }
 
     public static void main(String[] args) {
         Client client = new Client("localhost", 8888);
         client.runLogic();
-
     }
 }
