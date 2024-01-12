@@ -32,7 +32,6 @@ public class Client {
         writer.println(message);
     }
 
-
     private void startResponseReaderThread() {
         Thread responseThread = new Thread(() -> {
                 while (reader.hasNextLine()) {
@@ -42,7 +41,6 @@ public class Client {
         });
         responseThread.start();
     }
-
 
     public void runLogic() {
         startResponseReaderThread();
